@@ -28,34 +28,30 @@ def daterange(start_date, end_date):
         yield start_date + timedelta(n)
 
 
-def main():
-    dir_dirary = "/Users/tym/diary/"
+dir_dirary = "/Users/tym/diary/"
 
-    # <img src="https://i.imgur.com/QJeJyTh.jpg" width="700">
-    img_regex = re.compile(
-        r'<img [^>]*src=["\'](https?://[^"\']+)["\'][^>]*>', re.IGNORECASE)
+# <img src="https://i.imgur.com/QJeJyTh.jpg" width="700">
+img_regex = re.compile(
+    r'<img [^>]*src=["\'](https?://[^"\']+)["\'][^>]*>', re.IGNORECASE)
 
-    d_start = date(2022, 8, 11)
-    d_end = date.today()
+d_start = date(2022, 8, 11)
+d_end = date.today()
 
-    imgs_map = {}
+imgs_map = {}
 
-    for d in daterange(d_start, d_end + timedelta(days=1)):
-        diary_filename = d.strftime("%Y/%m/%d.md")
-        diary_path = dir_dirary + diary_filename
-        if not os.path.exists(diary_path):
+for d in daterange(d_start, d_end + timedelta(days=1)):
+    diary_filename = d.strftime("%Y/%m/%d.md")
+    diary_path = dir_dirary + diary_filename
+    if not os.path.exists(diary_path):
+        continue
+
+    with open(diary_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+        img_urls = img_regex.findall(content)
+        if not img_urls:
             continue
 
-        with open(diary_path, 'r', encoding='utf-8') as f:
-            content = f.read()
+        imgs_map[diary_filename] = img_urls
 
-            img_urls = img_regex.findall(content)
-            if not img_urls:
-                continue
-
-            imgs_map[diary_filename] = img_urls
-
-    print(json.dumps(imgs_map, indent=4))
-
-
-main()
+print(json.dumps(imgs_map, indent=4))
