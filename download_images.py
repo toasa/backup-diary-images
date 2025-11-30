@@ -5,22 +5,27 @@ import json
 import time
 from urllib.parse import urlparse
 
-BACKUP_DIR = "/Users/tym/tmp/backup-diary-images/imgs"
 
-if len(sys.argv) != 2:
-    print("Usage: {} IMAGE_LIST_JSON".format(sys.argv[0]))
+if len(sys.argv) != 3:
+    print("Usage: {} IMAGE_LIST_JSON BACKUP_DIR".format(sys.argv[0]))
+    exit(1)
 
+# BACKUP_DIR = "/Users/tym/tmp/backup-diary-images/imgs"
+BACKUP_DIR = sys.argv[2]
 
 with open(sys.argv[1], 'r', encoding='utf-8') as j:
-    for day, urls in json.load(j).items():
-        print(day)
+    for yyyymmdd, urls in json.load(j).items():
+
+        print(yyyymmdd)  # e.g. 2025/10/29.md
+
+        ymd = yyyymmdd[:4] + yyyymmdd[5:7] + yyyymmdd[8:10]
 
         for url in urls:
            # ユーザーエージェントを設定（サーバーからブロックされるのを避けるため）
             headers = {'User-Agent': 'Mozilla/5.0'}
             req = urllib.request.Request(url, headers=headers)
 
-            filename = os.path.basename(urlparse(url).path)
+            filename = ymd + "-" + os.path.basename(urlparse(url).path)
             save_path = os.path.join(BACKUP_DIR, filename)
 
             try:
