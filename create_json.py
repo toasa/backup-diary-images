@@ -28,7 +28,7 @@ def daterange(start_date, end_date):
         yield start_date + timedelta(n)
 
 
-dir_dirary = "/Users/tym/diary/"
+DIARY_DIR = "/Users/tym/diary/"
 
 # <img src="https://i.imgur.com/QJeJyTh.jpg" width="700">
 img_regex = re.compile(
@@ -41,7 +41,7 @@ imgs_map = {}
 
 for d in daterange(d_start, d_end + timedelta(days=1)):
     diary_filename = d.strftime("%Y/%m/%d.md")
-    diary_path = dir_dirary + diary_filename
+    diary_path = os.path.join(DIARY_DIR, diary_filename)
     if not os.path.exists(diary_path):
         continue
 
