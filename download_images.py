@@ -25,7 +25,7 @@ with open(sys.argv[1], 'r', encoding='utf-8') as j:
             save_path = os.path.join(BACKUP_DIR, filename)
 
             if os.path.exists(save_path):
-                print(f" Already saved: {filename}")
+                print(f"  Already saved: {filename}")
                 continue
 
             # ユーザーエージェントを設定（サーバーからブロックされるのを避けるため）
@@ -39,10 +39,10 @@ with open(sys.argv[1], 'r', encoding='utf-8') as j:
 
             except urllib.error.HTTPError as e:
                 print(
-                    f" Download failed!: {url} (HTTP error: {e.code} {e.reason})")
+                    f"  Download failed!: {url} (HTTP error: {e.code} {e.reason})")
             except urllib.error.URLError as e:
-                print(f" Download failed!: {url} (URL error: {e.reason})")
+                print(f"  Download failed!: {url} (URL error: {e.reason})")
             except Exception as e:
-                print(f" Unknown error: {url} ({e})")
+                print(f"  Unknown error: {url} ({e})")
 
             time.sleep(1)
