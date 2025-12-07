@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 
 import os
+import sys
 import re
 import json
 
@@ -28,7 +29,12 @@ def daterange(start_date, end_date):
         yield start_date + timedelta(n)
 
 
-DIARY_DIR = "/Users/tym/diary/"
+if len(sys.argv) != 2:
+    print("Usage: {} DIARY_DIR".format(sys.argv[0]))
+    exit(1)
+
+# DIARY_DIR = "/Users/tym/diary/"
+DIARY_DIR = sys.argv[1]
 
 # <img src="https://i.imgur.com/QJeJyTh.jpg" width="700">
 img_regex = re.compile(
