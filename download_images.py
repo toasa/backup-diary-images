@@ -21,12 +21,16 @@ with open(sys.argv[1], 'r', encoding='utf-8') as j:
         ymd = yyyymmdd[:4] + yyyymmdd[5:7] + yyyymmdd[8:10]
 
         for url in urls:
-           # ユーザーエージェントを設定（サーバーからブロックされるのを避けるため）
-            headers = {'User-Agent': 'Mozilla/5.0'}
-            req = urllib.request.Request(url, headers=headers)
-
             filename = ymd + "-" + os.path.basename(urlparse(url).path)
             save_path = os.path.join(BACKUP_DIR, filename)
+
+            if os.path.exists(save_path):
+                print(f" Already saved: {filename}")
+                continue
+
+            # ユーザーエージェントを設定（サーバーからブロックされるのを避けるため）
+            headers = {'User-Agent': 'Mozilla/5.0'}
+            req = urllib.request.Request(url, headers=headers)
 
             try:
                 with urllib.request.urlopen(req, timeout=10) as resp,  open(save_path, 'wb') as f:
